@@ -48,8 +48,8 @@ exports.getReports = async (req, res) => {
             {
               model: Gate,
               attributes: ["name"],
-            }
-          ]
+            },
+          ],
         },
       ],
       order: [[sortBy, order]],
@@ -120,8 +120,8 @@ exports.getReportsOfPerson = async (req, res) => {
             {
               model: Gate,
               attributes: ["name"],
-            }
-          ]
+            },
+          ],
         },
       ],
       order: [[sortBy, order]],
@@ -194,8 +194,8 @@ exports.getReportsOfDepartment = async (req, res) => {
             {
               model: Gate,
               attributes: ["name"],
-            }
-          ]
+            },
+          ],
         },
       ],
       order: [[sortBy, order]],
@@ -215,10 +215,13 @@ exports.getReportsOfDepartment = async (req, res) => {
   }
 };
 
-
-exports.addReport = async ({personId, camera_ip, confidenceFactor}) => {
+exports.addReport = async ({ personId, camera_url, confidenceFactor }) => {
   try {
-    const camera = await Camera.findOne({ip: camera_ip});
+    const camera = await Camera.findOne({
+      where: {
+        ip: camera_url,
+      },
+    });
     const newReport = await Report.create({
       personId,
       cameraId: camera.cameraId,
@@ -230,26 +233,28 @@ exports.addReport = async ({personId, camera_ip, confidenceFactor}) => {
       include: [
         {
           model: Person,
-          attributes: ['name', 'phoneNumber'],
-          include: [{
-            model: Department,
-            attributes: ['name']
-          }]
+          attributes: ["name", "phoneNumber"],
+          include: [
+            {
+              model: Department,
+              attributes: ["name"],
+            },
+          ],
         },
         {
           model: Camera,
-          attributes: ['name', 'direction'],
+          attributes: ["name", "direction"],
           include: [
             {
               model: Gate,
               attributes: ["name"],
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     });
 
-    return fullReport.get({plain: true});
+    return fullReport.get({ plain: true });
   } catch (error) {
     console.error("Error in addReport:", error);
   }

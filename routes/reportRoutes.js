@@ -87,12 +87,12 @@ router.get("/department/:departmentId", getReportsOfDepartment);
 
 router.post("/add", async (req, res) => {
   try {
-    const { personId, camera_ip, confidenceFactor } = req.body;
+    const { personId, camera_url, confidenceFactor } = req.body;
     if (personId == 0) {
       // Detected an unknown face
       res.sendResponse({status: 1});
     } else {
-      const report = await addReport({ personId, camera_ip, confidenceFactor });
+      const report = await addReport({ personId, camera_url, confidenceFactor });
       broadcast({
         type: "traffic_detected",
         ...report,

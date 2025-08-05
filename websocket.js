@@ -30,7 +30,7 @@ wss.on("connection", (ws) => {
             client.send(
               JSON.stringify({
                 type: "face_detected",
-                camera_ip: data.camera_ip,
+                camera_url: data.camera_url,
                 face: data.face,
                 exists: data.exists,
               })
@@ -39,12 +39,13 @@ wss.on("connection", (ws) => {
         }
         break;
       case "traffic_detected":
-        const {personId, camera_ip, confidenceFactor} = data;
+        console.log("received data:", JSON.stringify(data));
+        const {personId, camera_url, confidenceFactor} = data;
         if (personId == 0) {
           console.log("Anonymous Person detected!!!");
           break;
         }
-        const report = await addReport({personId, camera_ip, confidenceFactor});
+        const report = await addReport({personId, camera_url, confidenceFactor});
         for (const client of clients) {
           if (client.readyState === WebSocket.OPEN) {
             client.send(
