@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { Report, Person, Department, Camera, Gate } = require("../models");
+const { persianDateToUTC } = require("../utils/helper");
 
 exports.getReports = async (req, res) => {
   try {
@@ -71,12 +72,14 @@ exports.getReports = async (req, res) => {
 
 exports.getReportsOfPerson = async (req, res) => {
   try {
-    // Parameters
     const { personId } = req.params;
-    // Pagination
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
+
+    // Filtering
+    const from = req.query.from ? persianDateToUTC(req.query.from) : new Date("1970-01-01");
+    const to = req.query.to ? persianDateToUTC(req.query.to).setHours(23, 59) : new Date()
 
     // Sorting
     const sortBy = req.query.sortBy || "createdAt";
@@ -88,6 +91,9 @@ exports.getReportsOfPerson = async (req, res) => {
     const reports = await Report.findAndCountAll({
       where: {
         personId,
+        createdAt: {
+          [Op.between]: [from, to]
+        }
       },
       include: [
         {
@@ -97,8 +103,8 @@ exports.getReportsOfPerson = async (req, res) => {
             ? {
                 [Op.or]: [
                   { name: { [Op.iLike]: `%${search}%` } },
-                  { phoneNumber: { [Op.iLike]: `%${search}%` } },
-                ],
+                  { phoneNumber: { [Op.iLike]: `%${search}%` } }
+                ]
               }
             : undefined,
           include: [
@@ -106,12 +112,10 @@ exports.getReportsOfPerson = async (req, res) => {
               model: Department,
               attributes: ["name"],
               where: search
-                ? {
-                    name: { [Op.iLike]: `%${search}%` },
-                  }
-                : undefined,
-            },
-          ],
+                ? { name: { [Op.iLike]: `%${search}%` } }
+                : undefined
+            }
+          ]
         },
         {
           model: Camera,
@@ -119,27 +123,28 @@ exports.getReportsOfPerson = async (req, res) => {
           include: [
             {
               model: Gate,
-              attributes: ["name"],
-            },
-          ],
-        },
+              attributes: ["name"]
+            }
+          ]
+        }
       ],
       order: [[sortBy, order]],
       limit,
-      offset,
+      offset
     });
 
     res.sendResponse({
       totalItems: reports.count,
       totalPages: Math.ceil(reports.count / limit),
       currentPage: page,
-      reports: reports.rows,
+      reports: reports.rows
     });
   } catch (error) {
     console.error("Error in getReportsOfPerson:", error);
     res.sendError("Internal Server Error");
   }
 };
+
 
 exports.getReportsOfDepartment = async (req, res) => {
   try {
