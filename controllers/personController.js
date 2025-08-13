@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { Person, Department } = require("../models");
+const { broadcast } = require("../websocket");
 
 exports.getPerson = async (id) => {
   const person = await Person.findByPk(id);
@@ -34,7 +35,15 @@ exports.addPerson = async ({name, phoneNumber, identificationCode, departmentId,
     }
   });
   if (person) return 3;
-  await Person.create({name, phoneNumber, identificationCode, departmentId, verified, face, isManager});
+  person = await Person.create({name, phoneNumber, identificationCode, departmentId, verified, face, isManager});
+  broadcast({
+    type: "new_face",
+    person: {
+      personId: person.personId,
+      name,
+      face,
+    }
+  });
   return 1;
 }
 
