@@ -3,7 +3,9 @@ const {
   getReports,
   getReportsOfDepartment,
   getReportsOfPerson,
+  getReportsOfPersonExcel,
   addReport,
+  getReportsOfDepartmentExcel,
 } = require("../controllers/reportController");
 const { broadcast } = require("../websocket");
 
@@ -12,6 +14,8 @@ const router = express.Router();
 router.get("/", getReports);
 router.get("/person/:personId", getReportsOfPerson);
 router.get("/department/:departmentId", getReportsOfDepartment);
+router.get("/person/export/:personId", getReportsOfPersonExcel);
+router.get("/department/export/:departmentId", getReportsOfDepartmentExcel);
 
 /**
  * @swagger

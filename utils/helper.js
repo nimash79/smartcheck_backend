@@ -23,3 +23,6 @@ exports.persianDateToUTC = (persianDateStr) => {
   return moment.utc(gregorianStr, 'YYYY-MM-DD').toDate();
 }
 
+exports.toShamsi = (date) => {
+  return moment(date).format('jYYYY/jMM/jDD');
+}

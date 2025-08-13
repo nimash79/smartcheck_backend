@@ -77,8 +77,10 @@ exports.editCamera = async ({
   if (camera) return 3;
   camera = await Camera.findByPk(cameraId);
   if (!camera) return 4;
-  const gate = await Gate.findByPk(gateId);
-  if (!gate) return 5;
+  if (!main) {
+    const gateExists = await Gate.findByPk(gateId);
+    if (!gateExists) return 5;
+  }
   await camera.update({
     name,
     direction,
