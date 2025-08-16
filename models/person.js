@@ -31,6 +31,10 @@ module.exports = (sequelize) => {
       type: DataTypes.JSON,
       allowNull: true
     },
+    voice: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
     isManager: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
