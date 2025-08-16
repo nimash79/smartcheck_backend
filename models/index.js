@@ -7,6 +7,7 @@ const CameraModel = require("./camera.js");
 const DepartmentModel = require("./department.js");
 const GateModel = require("./gate.js");
 const SettingModel = require("./setting.js");
+const AlarmModel = require("./alarm.js");
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -26,6 +27,7 @@ const Camera = CameraModel(sequelize);
 const Department = DepartmentModel(sequelize);
 const Gate = GateModel(sequelize);
 const Setting = SettingModel(sequelize);
+const Alarm = AlarmModel(sequelize);
 
 // Define relations
 Person.hasMany(Report, { foreignKey: "personId" });
@@ -46,6 +48,8 @@ Person.hasOne(Department, {
   as: "managedDepartment",
   foreignKey: "managerId",
 });
+Alarm.hasOne(Person, { foreignKey: "personId"} );
+Alarm.belongsTo(Person, {foreignKey: "personId"});
 
 sequelize.sync();
 
@@ -57,4 +61,5 @@ module.exports = {
   Report,
   Camera,
   Setting,
+  Alarm,
 };

@@ -7,6 +7,7 @@ const {
   addPerson,
   getManagers,
   getFaces,
+  getVoices,
 } = require("../controllers/personController");
 const { broadcast } = require("../websocket");
 
@@ -153,6 +154,42 @@ router.get("/managers", async (req, res) => {
  *                     $ref: '#/components/schemas/Person'
  */
 router.get("/faces", getFaces);
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Person2:
+ *       type: object
+ *       properties:
+ *         personId:
+ *           type: integer
+ *           example: 123
+ *         name:
+ *           type: string
+ *           example: John Doe
+ *         voice:
+ *           type: object
+ *           description: Voice data in JSON format
+ *           example: [[[255, 255, 255], [255, 255, 255], [255, 255, 255], [255, 255, 255]]]
+
+ * /api/persons/voices:
+ *   get:
+ *     summary: Get all voices
+ *     responses:
+ *       200:
+ *         description: List of persons with their voices
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 persons:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Person2'
+ */
+router.get("/voices", getVoices);
 
 /**
  * @swagger

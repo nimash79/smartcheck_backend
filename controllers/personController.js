@@ -44,6 +44,14 @@ exports.addPerson = async ({name, phoneNumber, identificationCode, departmentId,
       face,
     }
   });
+  broadcast({
+    type: "new_voice",
+    person: {
+      personId: person.personId,
+      name,
+      voice,
+    }
+  });
   return 1;
 }
 
@@ -101,6 +109,13 @@ exports.getManagers = async () => {
 exports.getFaces = async (req, res) => {
   const persons = await Person.findAll({
     attributes: ["personId", "name", "face"],
+  });
+  res.sendResponse({status: 1, persons});
+}
+
+exports.getVoices = async (req, res) => {
+  const persons = await Person.findAll({
+    attributes: ["personId", "name", "voice"],
   });
   res.sendResponse({status: 1, persons});
 }

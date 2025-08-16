@@ -4,6 +4,7 @@ const departmentRoutes = require("./departmentRoutes");
 const gateRoutes = require("./gateRoutes");
 const settingRoutes = require("./settingRoutes");
 const reportRoutes = require("./reportRoutes");
+const alarmRoutes = require("./alarmRoutes");
 
 module.exports = {
     personRoutes,
@@ -12,4 +13,5 @@ module.exports = {
     gateRoutes,
     settingRoutes,
     reportRoutes,
+    alarmRoutes,
 }

@@ -23,9 +23,8 @@ wss.on("connection", (ws) => {
       return console.error("Invalid JSON", err);
     }
 
-    switch (data.event) {
-      case "face_detected":
-        for (const client of clients) {
+    if (data.event === "face_detected") {
+      for (const client of clients) {
           if (client.readyState === WebSocket.OPEN) {
             client.send(
               JSON.stringify({
@@ -37,26 +36,6 @@ wss.on("connection", (ws) => {
             );
           }
         }
-        break;
-      case "traffic_detected":
-        console.log("received data:", JSON.stringify(data));
-        const {personId, camera_url, confidenceFactor} = data;
-        if (personId == 0) {
-          console.log("Anonymous Person detected!!!");
-          break;
-        }
-        const report = await addReport({personId, camera_url, confidenceFactor});
-        for (const client of clients) {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(
-              JSON.stringify({
-                type: "traffic_detected",
-                report
-              })
-            )
-          }
-        }
-        break;
     }
   });
 });

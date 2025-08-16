@@ -16,6 +16,7 @@ const {
   gateRoutes,
   settingRoutes,
   reportRoutes,
+  alarmRoutes,
 } = require("./routes");
 const {
   apiMiddleWare,
@@ -70,6 +71,7 @@ app.use("/api/departments", departmentRoutes);
 app.use("/api/gates", gateRoutes);
 app.use("/api/settings", settingRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/alarms", alarmRoutes);
 app.use("/", (req, res) => res.send("SmartCheck"));
 app.use((req, res) => res.sendResponse("api not found", 404));
 
