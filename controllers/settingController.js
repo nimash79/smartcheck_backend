@@ -13,8 +13,8 @@ exports.addSetting = async ({ deviceIp, deviceName }) => {
   return 1;
 };
 
-exports.editSetting = async ({ deviceIp, deviceName }) => {
+exports.editSetting = async ({ deviceIp, deviceName, keyWords }) => {
   let setting = await Setting.findOne();
-  await setting.update({ deviceIp, deviceName });
+  await setting.update({ deviceIp, deviceName, keyWords });
   return 1;
 };

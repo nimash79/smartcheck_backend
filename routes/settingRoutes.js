@@ -27,10 +27,10 @@ router.post("/create", async (req, res) => {
 
 router.post("/edit", async (req, res) => {
   try {
-    const {deviceIp, deviceName} = req.body;
+    const {deviceIp, deviceName, keyWords} = req.body;
     if (!deviceIp || !deviceName)
       return res.sendError("Required parameters", 400);
-    const status = await editSetting({deviceIp, deviceName});
+    const status = await editSetting({deviceIp, deviceName, keyWords});
     res.sendResponse({ status });
   } catch (err) {
     res.sendError(err, 500);

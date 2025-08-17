@@ -15,5 +15,9 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    keyWords: {
+      type: DataTypes.STRING,
+      defaultValue: "",
+    },
   });
 };
