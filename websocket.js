@@ -25,17 +25,29 @@ wss.on("connection", (ws) => {
 
     if (data.event === "face_detected") {
       for (const client of clients) {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(
-              JSON.stringify({
-                type: "face_detected",
-                camera_url: data.camera_url,
-                face: data.face,
-                exists: data.exists,
-              })
-            );
-          }
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(
+            JSON.stringify({
+              type: "face_detected",
+              camera_url: data.camera_url,
+              face: data.face,
+              exists: data.exists,
+            })
+          );
         }
+      }
+    } else if (data.event === "add_voice") {
+      for (const client of clients) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(
+            JSON.stringify({
+              type: "add_voice",
+              microphone_url: data.microphone_url,
+              voice: data.voice,
+            })
+          );
+        }
+      }
     }
   });
 });
@@ -47,6 +59,6 @@ const broadcast = (message) => {
       client.send(stringified);
     }
   }
-}
+};
 
 module.exports = { broadcast };

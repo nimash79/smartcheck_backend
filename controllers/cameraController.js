@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const { Camera, Gate } = require("../models");
 
-exports.addCamera = async ({ name, direction, ip, main, display, gateId }) => {
+exports.addCamera = async ({ name, direction, ip, microphone, main, display, gateId }) => {
   if (direction !== "enter" && direction !== "exit") return 2;
   let camera = await Camera.findOne({
     where: { name },
@@ -19,6 +19,7 @@ exports.addCamera = async ({ name, direction, ip, main, display, gateId }) => {
     name,
     direction,
     ip,
+    microphone,
     main,
     display,
     gateId,
@@ -56,6 +57,7 @@ exports.editCamera = async ({
   name,
   direction,
   ip,
+  microphone,
   main,
   display,
   gateId,
@@ -85,6 +87,7 @@ exports.editCamera = async ({
     name,
     direction,
     ip,
+    microphone,
     main,
     display,
     gateId,

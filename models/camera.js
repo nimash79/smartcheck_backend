@@ -23,6 +23,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    microphone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     main: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,

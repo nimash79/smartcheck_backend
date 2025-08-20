@@ -49,12 +49,12 @@ router.get("/:cameraId", async (req, res) => {
 
 router.post("/create", async (req, res) => {
   try {
-    const { name, direction, ip, main, display, gateId } = req.body;
-    if (!name || !direction || !ip || main == undefined || display == undefined)
+    const { name, direction, ip, microphone, main, display, gateId } = req.body;
+    if (!name || !direction || !ip || !microphone || main == undefined || display == undefined)
       return res.sendError("Required parameters", 400);
     if (!main && !gateId)
       return res.sendError("Required parameters", 400);
-    const status = await addCamera({ name, direction, ip, main, display, gateId });
+    const status = await addCamera({ name, direction, ip, microphone, main, display, gateId });
     res.sendResponse({ status });
   } catch (err) {
     res.sendError(err, 500);
@@ -63,12 +63,12 @@ router.post("/create", async (req, res) => {
 
 router.post("/edit", async (req, res) => {
   try {
-    const { cameraId, name, direction, ip, main, display, gateId } = req.body;
-    if (!cameraId || !name || !direction || !ip || main == undefined || display == undefined)
+    const { cameraId, name, direction, ip, microphone, main, display, gateId } = req.body;
+    if (!cameraId || !name || !direction || !ip || !microphone || main == undefined || display == undefined)
       return res.sendError("Required parameters", 400);
     if (!main && !gateId)
       return res.sendError("Required parameters", 400);
-    const status = await editCamera({ cameraId, name, direction, ip, main, display, gateId });
+    const status = await editCamera({ cameraId, name, direction, ip, microphone, main, display, gateId });
     res.sendResponse({ status });
   } catch (err) {
     res.sendError(err, 500);

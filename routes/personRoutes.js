@@ -31,6 +31,7 @@ router.post("/create", async (req, res) => {
       identificationCode,
       verified,
       face,
+      voice,
       isManager,
     } = req.body;
     if (
@@ -39,6 +40,7 @@ router.post("/create", async (req, res) => {
       !identificationCode ||
       verified == undefined ||
       !face ||
+      !voice ||
       isManager == undefined
     )
       return res.sendError("Required parameters", 400);
@@ -51,6 +53,7 @@ router.post("/create", async (req, res) => {
       identificationCode,
       verified,
       face,
+      voice,
       isManager,
     });
     res.sendResponse({ status });
@@ -69,6 +72,7 @@ router.post("/edit", async (req, res) => {
       identificationCode,
       verified,
       face,
+      voice,
       isManager,
     } = req.body;
     if (
@@ -78,6 +82,7 @@ router.post("/edit", async (req, res) => {
       !identificationCode ||
       verified == undefined ||
       !face ||
+      !voice ||
       isManager == undefined
     )
       return res.sendError("Required parameters", 400);
@@ -91,6 +96,7 @@ router.post("/edit", async (req, res) => {
       identificationCode,
       verified,
       face,
+      voice,
       isManager,
     });
     res.sendResponse({ status });
